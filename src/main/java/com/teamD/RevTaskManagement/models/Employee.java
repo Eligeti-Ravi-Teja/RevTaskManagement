@@ -1,6 +1,9 @@
 package com.teamD.RevTaskManagement.models;
 
+import com.teamD.RevTaskManagement.enums.EmployeeStatus;
+import com.teamD.RevTaskManagement.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
@@ -9,6 +12,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +21,16 @@ public class Employee {
     private String employeeName;
     private String email;
     private Date dateOfJoining;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String description;
     private String phone;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private EmployeeStatus status;
+
     private String password;
 
     @ManyToMany(mappedBy = "team", cascade = CascadeType.ALL)
@@ -33,10 +43,4 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
     private List<Skill> skills;
-
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Message> sentMessages;
-
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Message> receivedMessages;
 }
