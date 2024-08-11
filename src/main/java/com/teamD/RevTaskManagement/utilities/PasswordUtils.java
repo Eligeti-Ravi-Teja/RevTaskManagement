@@ -3,7 +3,7 @@ package com.teamD.RevTaskManagement.utilities;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
-public class PasswordEncryptor {
+public class PasswordUtils {
 
     // Hash the password using Argon2 algorithm
     public static String hashPassword(String plainPassword) {

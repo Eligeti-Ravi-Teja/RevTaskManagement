@@ -1,6 +1,6 @@
 package com.teamD.RevTaskManagement.service;
 
-import com.teamD.RevTaskManagement.utilities.PasswordEncryptor;
+import com.teamD.RevTaskManagement.utilities.PasswordUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class UserService {
 
     public void registerUser(String username, String plainPassword) {
         // Hash the password using Argon2 and store it
-        String hashedPassword = PasswordEncryptor.hashPassword(plainPassword);
+        String hashedPassword = PasswordUtils.hashPassword(plainPassword);
         userDatabase.put(username, hashedPassword);
     }
 
@@ -28,7 +28,7 @@ public class UserService {
         }
 
         // Hash the input password and compare it with the stored hashed password
-        String hashedInputPassword = PasswordEncryptor.hashPassword(plainPassword);
+        String hashedInputPassword = PasswordUtils.hashPassword(plainPassword);
         return storedHashedPassword.equals(hashedInputPassword);
     }
 }
