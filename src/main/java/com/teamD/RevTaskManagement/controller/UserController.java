@@ -1,29 +1,22 @@
 package com.teamD.RevTaskManagement.controller;
 
-import com.teamD.RevTaskManagement.service.UserService;
+import com.teamD.RevTaskManagement.utilities.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
     @Autowired
-    private UserService userService;
+    PasswordUtils passwordUtils;
 
-    @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String password) {
-        userService.registerUser(username, password);
-        return "User registered successfully!";
+    @PostMapping("/hash")
+    public String hashPassword(@RequestParam String password) {
+        return passwordUtils.hashPassword(password);
     }
 
-    @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password) {
-        boolean isLoginSuccessful = userService.loginUser(username, password);
-        if (isLoginSuccessful) {
-            return "Login successful!";
-        } else {
-            return "Invalid username or password!";
-        }
+    @PostMapping("/verify")
+    public boolean verifyPassword(@RequestParam String password, @RequestParam String hashedPassword) {
+        return passwordUtils.verifyPassword(password, hashedPassword);
     }
 }

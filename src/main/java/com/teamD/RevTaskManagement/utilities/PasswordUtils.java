@@ -1,24 +1,36 @@
 package com.teamD.RevTaskManagement.utilities;
 
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PasswordUtils {
 
-    // Hash the password using Argon2 algorithm
-    public static String hashPassword(String plainPassword) {
-        Argon2 argon2 = Argon2Factory.create();
-
+    // Hash the password using SHA-256
+    public String hashPassword(String plainPassword) {
         try {
-            // Number of iterations, memory cost, and parallelism (you can adjust these based on your needs)
-            int iterations = 2; // Less number of iterations for fast hashing
-            int memory = 65536; // Memory cost (64MB)
-            int parallelism = 1; // Number of threads and cores to use
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(plainPassword.getBytes(StandardCharsets.UTF_8));
 
-            // Hashing the password
-            return argon2.hash(iterations, memory, parallelism, plainPassword.toCharArray());
-        } finally {
-            argon2.wipeArray(plainPassword.toCharArray()); // Ensure the plain password is wiped from memory
+            // Convert byte array into a hexadecimal string
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : encodedHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error occurred while hashing password", e);
         }
+    }
+
+    // Verify the password by comparing the hash of the input with the stored hash
+    public boolean verifyPassword(String plainPassword, String hashedPassword) {
+        return hashPassword(plainPassword).equals(hashedPassword);
     }
 }
