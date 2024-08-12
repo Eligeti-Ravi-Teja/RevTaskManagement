@@ -2,11 +2,13 @@ package com.teamD.RevTaskManagement.utilities;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PasswordUtils {
 
     // Hash the password using Argon2 algorithm
-    public static String hashPassword(String plainPassword) {
+    public  String hashPassword(String plainPassword) {
         Argon2 argon2 = Argon2Factory.create();
 
         try {
