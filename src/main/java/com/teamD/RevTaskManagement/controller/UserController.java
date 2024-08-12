@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     PasswordUtils passwordUtils;
+<<<<<<< HEAD
 
     @PostMapping("/hash")
     public String hashPassword(@RequestParam String password) {
@@ -18,5 +19,10 @@ public class UserController {
     @PostMapping("/verify")
     public boolean verifyPassword(@RequestParam String password, @RequestParam String hashedPassword) {
         return passwordUtils.verifyPassword(password, hashedPassword);
+=======
+    @PostMapping
+    public String hashPassword(@RequestParam String password) {
+        return passwordUtils.hashPassword(password);
+>>>>>>> 2cb0927ec2d874bce097871fc86fbc3a51f2e50b
     }
 }
